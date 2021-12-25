@@ -1,0 +1,53 @@
+CREATE DATABASE final;
+USE final;
+SHOW DATABASES;
+
+CREATE TABLE Heart_Failure_Prediction_Chart
+(
+    Age INT,
+    Anaemia INT,
+    creatinine_phosphokinase INT,
+    diabetes INT,
+    ejection_fraction INT,
+    high_blood_pressure INT,
+    platelets FLOAT,
+    serum_creatinine FLOAT,
+    serum_sodium INT,
+    sex INT,
+    smoking INT,
+    time INT,
+    DEATH_EVENT INT
+);
+
+SELECT * FROM Heart_Failure_Prediction_Chart;
+
+CREATE OR REPLACE VIEW `Heart Failure Deaths and Diabetes` AS
+SELECT COUNT(DEATH_EVENT) AS `Total Deaths`, diabetes
+FROM Heart_Failure_Prediction_Chart
+WHERE DEATH_EVENT = 1
+GROUP BY diabetes;
+
+CREATE OR REPLACE VIEW `Heart Failure Deaths and Smoking` AS
+SELECT COUNT(DEATH_EVENT) AS `Total Deaths`, smoking
+FROM Heart_Failure_Prediction_Chart
+WHERE DEATH_EVENT = 1
+GROUP BY smoking;
+
+CREATE OR REPLACE VIEW `Heart Failure Deaths by Age` AS
+SELECT COUNT(DEATH_EVENT) AS `Total Deaths`, Age
+FROM Heart_Failure_Prediction_Chart
+WHERE DEATH_EVENT = 1
+GROUP BY Age
+ORDER BY Age DESC;
+
+"Leading Causes of Heart Failure"
+SELECT COUNT(DEATH_EVENT), DEATH_EVENT
+FROM Heart_Failure_Prediction_Chart
+WHERE smoking = 1 OR diabetes = 1 OR high_blood_pressure = 1
+GROUP BY DEATH_EVENT;
+
+"Heart Failure Deaths and High Blood Pressure"
+SELECT COUNT(DEATH_EVENT) AS `Total Deaths`, high_blood_pressure
+FROM Heart_Failure_Prediction_Chart
+WHERE DEATH_EVENT = 1
+GROUP BY high_blood_pressure;
